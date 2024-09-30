@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SporttiporssiWeb.Models.Game> 
+
+@{
+    ViewData["Title"] = "Hockey Home";
+    var backgroundImageUrl = "https://spimagebank.blob.core.windows.net/sport-backgrounds/hockey-background.jpg";
+}
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<style>
+    body {
+        background-image: url('@backgroundImageUrl');
+        background-size: cover; /* Cover the entire page */
+        background-position: center; /* Center the background */
+        background-repeat: no-repeat; /* Do not repeat the image */
+    }
+</style>
+
+<div style="background-color: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 5px; display: inline-block; margin: 0 auto;">
+    <h4 style="text-align: center; margin-bottom: 20px; color: white;">Games on selected date:</h4>
+    <div style="text-align: center; color: white; font-weight: bold; margin-bottom: 15px;">      
+        <a href="javascript:navigateToPreviousDate();" style="margin-right: 30px; text-decoration: none; outline: none;">
+            <img src="~/Images/arrow_white.png" alt="Arrow Left" style="width: 20px; height: auto; transform: rotate(180deg);" /> 
+        </a>
+        @DateTime.Parse(HttpContextAccessor.HttpContext?.Session.GetString("SelectedDate")).ToString("dd.MM.yyyy")
+        <a href="javascript:navigateToPreviousDate();" style="margin-left: 30px; text-decoration: none; outline: none;">
+            <img src="~/Images/arrow_white.png" alt="Arrow Left" style="width: 20px; height: auto;" />
+        </a>
+    </div>
+
+    @foreach(var game in Model)
+    {
+        var logoNameHome = game.HomeTeamName.Replace("-", "").ToLower();
+        var logoNameAway = game.AwayTeamName.Replace("-", "").ToLower();
+
+        <div style="display: flex; align-items: center; color: white; margin-bottom: 10px;">
+            <span style="width: 120px; margin-right: 10px; text-align: end;">@game.HomeTeamName</span>
+            <img src="https://spimagebank.blob.core.windows.net/team-logos/@($"{logoNameHome}.webp")" alt="@game.HomeTeamName Logo" style="width: 50px; height: auto; margin-right: 30px;" />
+ 
+            <div style="margin: 0 10px; position: relative; display: flex; flex-direction: column; align-items: center;">
+                <span style="font-weight: bold;">@game.Start.ToLocalTime().ToString("HH:mm")</span>
+                <span style="margin-top: 0; margin-bottom: 0;">-</span>
+            </div>
+
+            <img src="https://spimagebank.blob.core.windows.net/team-logos/@($"{logoNameAway}.webp")" alt="@game.AwayTeamName Logo" style="width: 50px; height: auto; margin-left: 30px;" />
+            <span style="width: 120px; margin-left: 10px;">@game.AwayTeamName</span>
+        </div>    
+    }
+</div>

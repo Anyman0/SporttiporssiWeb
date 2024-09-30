@@ -1,0 +1,8 @@
+﻿namespace SporttiporssiWeb.Models
+{
+    public class Sport
+    {
+        public Guid SportId { get; set; }
+        public string SportName { get; set; }
+    }
+}
